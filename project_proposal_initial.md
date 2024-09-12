@@ -1,4 +1,4 @@
-#### SERX94: Project Proposal
+#### SER594: Project Proposal
 
 #### US Agricultural Import Analysis
 
