@@ -99,8 +99,7 @@ As an official government source, the data is accurate and regularly updated, ma
 **Analysis:** The scatter plots of dollar value versus fiscal quarter for both exports and imports reveal a consistent distribution across all quarters, suggesting stable trade activity throughout the year. The concentration of data points at lower dollar values indicates that most transactions are of smaller scale, with occasional higher-value transactions scattered across the quarters. 
 
 ### Visual 2 - Scatter Plot of Fiscal Quarter vs Fiscal Year
-**Analysis:** Answer
-The scatter plots of fiscal quarter versus fiscal year for both exports and imports show a uniform distribution across all years and quarters, indicating consistent trade activity without significant seasonal fluctuations. This stability suggests that trade operations are evenly distributed throughout the fiscal year, potentially reflecting a balanced approach to managing trade flows over time.
+**Analysis:** The scatter plots of fiscal quarter versus fiscal year for both exports and imports show a uniform distribution across all years and quarters, indicating consistent trade activity without significant seasonal fluctuations. This stability suggests that trade operations are evenly distributed throughout the fiscal year, potentially reflecting a balanced approach to managing trade flows over time.
 
 ### Visual 3 - Scatter Plot of Dollar Value vs Fiscal Year
 **Analysis:** The scatter plots of dollar value versus fiscal year for both exports and imports show a consistent distribution across years, with most transactions clustered at lower dollar values. This indicates stable trade activity over the years, with occasional higher-value transactions suggesting significant but infrequent deals. The pattern reflects a balanced trade environment with regular, smaller-scale transactions interspersed with larger ones.
