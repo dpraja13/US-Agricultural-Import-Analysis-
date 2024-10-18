@@ -1,15 +1,8 @@
-import wf_dataprocessing
-import wf_visualization
-
-def main():
-    print("Running data processing...")
-    wf_dataprocessing.main()
-    
-    print("Running visualization...")
-    wf_visualization.main()
-    
-    print("Data processing and visualization completed.")
+import os
 
 if __name__ == "__main__":
-    main()
+    
+    os.system("py wf_dataprocessing.py")
+    os.system("py wf_visualization.py")
+
 

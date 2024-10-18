@@ -1,3 +1,4 @@
+from pathlib import Path
 import os
 import pandas as pd
 
@@ -46,7 +47,7 @@ def clean_data(input_file, output_file):
     print(f"Cleaned data saved to {output_file}")
 
 def main():
-    # Define file paths
+	# Define file paths
     input_exports_file = 'data_original/Top%205%20Agricultural%20Exports%20by%20State.csv'
     input_imports_file = 'data_original/Top%205%20Agricultural%20Imports%20by%20State.csv'
     
@@ -58,4 +59,6 @@ def main():
     clean_data(input_imports_file, output_imports_file)
 
 if __name__ == '__main__':
+    create_directory(Path('data_original'))
+    create_directory(Path('data_processed'))
     main()
