@@ -96,20 +96,20 @@ As an official government source, the data is accurate and regularly updated, ma
 
 ## Visualizations
 ### Visual 1 - Scatter Plot of Dollar Value vs Fiscal Quarter
-**Analysis:** The scatter plot indicates consistent dollar values across fiscal quarters for both exports and imports. This suggests stable trade flow throughout the year, with no significant seasonal spikes or drops.
+**Analysis:** The scatter plots of dollar value versus fiscal quarter for both exports and imports reveal a consistent distribution across all quarters, suggesting stable trade activity throughout the year. The concentration of data points at lower dollar values indicates that most transactions are of smaller scale, with occasional higher-value transactions scattered across the quarters. 
 
 ### Visual 2 - Scatter Plot of Fiscal Quarter vs Fiscal Year
-**Analysis:** The plot shows distinct clusters for each fiscal year, indicating regular reporting across quarters. This consistency suggests systematic data collection practices over the years, ensuring reliable trend analysis.
+**Analysis:** Answer
+The scatter plots of fiscal quarter versus fiscal year for both exports and imports show a uniform distribution across all years and quarters, indicating consistent trade activity without significant seasonal fluctuations. This stability suggests that trade operations are evenly distributed throughout the fiscal year, potentially reflecting a balanced approach to managing trade flows over time.
 
 ### Visual 3 - Scatter Plot of Dollar Value vs Fiscal Year
-**Analysis:** The scatter plot demonstrates variability in dollar value across fiscal years, with some years showing higher concentrations of trade. This could reflect economic conditions or policy changes impacting trade volumes in specific years.
-
+**Analysis:** The scatter plots of dollar value versus fiscal year for both exports and imports show a consistent distribution across years, with most transactions clustered at lower dollar values. This indicates stable trade activity over the years, with occasional higher-value transactions suggesting significant but infrequent deals. The pattern reflects a balanced trade environment with regular, smaller-scale transactions interspersed with larger ones.
 
 ### Visual 4 - Histogram of Countries
-**Analysis:** The distribution reveals a concentration of trade with a few countries, with the United States and China being prominent partners. This suggests strategic economic relationships and dependencies on these major trading partners.
+**Analysis:** The histograms reveal that both exports and imports are concentrated among a few countries, with the top countries showing significantly higher frequencies. This suggests a strong trade relationship with these key partners, potentially indicating economic dependencies.
 
-### Visual 5 - Histogram of Commodity Names
-**Analysis:** The histogram shows that certain commodities, such as "Soybeans" and "Corn," dominate both exports and imports. This indicates these commodities are key players in trade activities, reflecting their importance in agricultural markets.
+### Visual 5 - Histogram of Commodities
+**Analysis:** The export chart shows a wider range of commodities with higher frequencies, indicating a diverse export economy, while the import chart has fewer high-frequency commodities, suggesting reliance on specific imports.
 
 
 
