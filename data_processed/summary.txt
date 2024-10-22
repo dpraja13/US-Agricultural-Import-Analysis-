@@ -1,0 +1,20 @@
+Summary Statistics for Exports:
+Quantitative Feature Summary (min, max, median):
+Dollar value: Min=2554, Max=16404407759, Median=5462804.0
+Fiscal quarter: Min=1, Max=4, Median=2.0
+Fiscal year: Min=2019, Max=2024, Median=2021.0
+
+Qualitative Feature Summary:
+Commodity name: Unique Categories=49, Most Frequent=['Food Preparations'], Least Frequent=Industrial Alcohols And Fatty Acids
+Country: Unique Categories=147, Most Frequent=['World'], Least Frequent=Afghanistan
+
+Summary Statistics for Imports:
+Quantitative Feature Summary (min, max, median):
+Dollar value: Min=1733, Max=3969406712, Median=4356781.0
+Fiscal quarter: Min=1, Max=4, Median=2.0
+Fiscal year: Min=2019, Max=2024, Median=2021.0
+
+Qualitative Feature Summary:
+Commodity name: Unique Categories=45, Most Frequent=['Processed Fruit And Vegetables'], Least Frequent=Ethanol (Non-Beverage)
+Country: Unique Categories=107, Most Frequent=['World'], Least Frequent=Mongolia
+
