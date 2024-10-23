@@ -1,12 +1,12 @@
 Correlation Matrix (Pairwise) for Exports:
-                Dollar value  Fiscal quarter  Fiscal year
-Dollar value        1.000000             NaN          NaN
-Fiscal quarter     -0.023285        1.000000          NaN
-Fiscal year         0.023356       -0.095736          1.0
+               Dollar value Fiscal quarter Fiscal year
+Dollar value        1.00000                           
+Fiscal quarter     -0.02328        1.00000            
+Fiscal year         0.02336       -0.09574     1.00000
 
 Correlation Matrix (Pairwise) for Imports:
-                Dollar value  Fiscal quarter  Fiscal year
-Dollar value        1.000000             NaN          NaN
-Fiscal quarter     -0.000535        1.000000          NaN
-Fiscal year         0.034223       -0.094057          1.0
+               Dollar value Fiscal quarter Fiscal year
+Dollar value        1.00000                           
+Fiscal quarter     -0.00053        1.00000            
+Fiscal year         0.03422       -0.09406     1.00000
 

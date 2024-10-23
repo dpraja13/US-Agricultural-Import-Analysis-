@@ -40,18 +40,23 @@ def compute_summary_statistics(df, quantitative_features, qualitative_features, 
 def compute_correlations(df, quantitative_features, prefix):
     available_features = [feature for feature in quantitative_features if feature in df.columns]
     if available_features:
+        # Compute the correlation matrix without rounding
         correlation_matrix = df[available_features].corr()
         
         # Mask the upper triangular part of the matrix
         mask = np.triu(np.ones(correlation_matrix.shape), k=1).astype(bool)
         correlation_matrix = correlation_matrix.mask(mask)
         
-        # Save the correlation matrix to a text file
+        # Replace NaN with spaces and format using apply
+        formatted_matrix = correlation_matrix.apply(lambda col: col.apply(lambda x: f'{x:.5f}' if pd.notnull(x) else ' '))
+        
+        # Save the formatted correlation matrix to a text file
         mode = 'w' if prefix == 'Exports' else 'a'  # 'w' for first write, 'a' for subsequent appends
         with open(correlations_file, mode) as f:
-            f.write(f"Correlation Matrix (Pairwise) for {prefix}:\n")
-            f.write(correlation_matrix.to_string())
-            f.write("\n\n")  # Add blank lines between matrices
+            f.write(f'Correlation Matrix (Pairwise) for {prefix}:\n')
+            f.write(formatted_matrix.to_string(na_rep=' '))
+            f.write('\n\n')   # Add blank lines between matrices
+
 
 # Define a function to create scatter plots and histograms
 def create_visualizations(df_exports, df_imports, quantitative_features, qualitative_features):
