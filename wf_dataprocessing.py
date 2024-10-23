@@ -18,12 +18,12 @@ def clean_data(input_file, output_file):
     # 2. Handle missing values (drop rows with missing values for simplicity)
     df = df.dropna() 
     
-    # 3. Correct data types 
+    # 3. Standardize data types 
     # Convert "Fiscal year" to integer
     if 'Fiscal year' in df.columns:
         df['Fiscal year'] = pd.to_numeric(df['Fiscal year'], errors='coerce')
     
-    # Convert "Fiscal quarter" to integer (assuming it's in the dataset)
+    # Convert "Fiscal quarter" to integer
     if 'Fiscal quarter' in df.columns:
         df['Fiscal quarter'] = pd.to_numeric(df['Fiscal quarter'], errors='coerce')
     
@@ -31,7 +31,7 @@ def clean_data(input_file, output_file):
     if 'Dollar value' in df.columns:
         df['Dollar value'] = pd.to_numeric(df['Dollar value'], errors='coerce')
     
-    # 4. Standardize categorical columns (trim spaces and ensure consistency)
+    # 4. Standardize categorical columns
     if 'Country' in df.columns:
         df['Country'] = df['Country'].str.strip().str.title()
     
@@ -59,6 +59,5 @@ def main():
     clean_data(input_imports_file, output_imports_file)
 
 if __name__ == '__main__':
-    create_directory(Path('data_original'))
     create_directory(Path('data_processed'))
     main()

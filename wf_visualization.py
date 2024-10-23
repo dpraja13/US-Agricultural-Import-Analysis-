@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-# Define directories
+# Defining directories
 data_dir = 'data_processed'
 output_dir = 'visuals'
 summary_file = os.path.join(data_dir, 'summary.txt')
@@ -14,9 +14,10 @@ os.makedirs(output_dir, exist_ok=True)
 
 # Define a function to calculate summary statistics
 def compute_summary_statistics(df, quantitative_features, qualitative_features, prefix):
-    mode = 'w' if prefix == 'Exports' else 'a'  # 'w' for first write, 'a' for subsequent appends
+    mode = 'w'
     with open(summary_file, mode) as f:
         f.write(f"Summary Statistics for {prefix}:\n")
+
         # Summary for quantitative features
         f.write("Quantitative Feature Summary (min, max, median):\n")
         for feature in quantitative_features:
@@ -24,7 +25,10 @@ def compute_summary_statistics(df, quantitative_features, qualitative_features, 
                 min_val = df[feature].min()
                 max_val = df[feature].max()
                 median_val = df[feature].median()
-                f.write(f"{feature}: Min={min_val}, Max={max_val}, Median={median_val}\n")
+                f.write(f"{feature}: Min={min_val}\n")
+                f.write(f"{feature}: Max={max_val}\n")
+                f.write(f"{feature}: Median={median_val}\n")
+            f.write("\n")
 
         # Summary for qualitative features
         f.write("\nQualitative Feature Summary:\n")
@@ -33,29 +37,25 @@ def compute_summary_statistics(df, quantitative_features, qualitative_features, 
                 unique_categories = df[feature].nunique()
                 most_frequent = df[feature].mode().values
                 least_frequent = df[feature].value_counts().idxmin()
-                f.write(f"{feature}: Unique Categories={unique_categories}, Most Frequent={most_frequent}, Least Frequent={least_frequent}\n")
-        f.write("\n")  # Add a blank line between summaries
+                f.write(f"{feature}: Unique Categories={unique_categories}\n")
+                f.write(f"{feature}: Most Frequent={most_frequent}\n")
+                f.write(f"{feature}: Least Frequent={least_frequent}\n")
+            f.write("\n") 
 
 # Define a function to compute pairwise correlations
 def compute_correlations(df, quantitative_features, prefix):
     available_features = [feature for feature in quantitative_features if feature in df.columns]
     if available_features:
-        # Compute the correlation matrix without rounding
         correlation_matrix = df[available_features].corr()
-        
-        # Mask the upper triangular part of the matrix
         mask = np.triu(np.ones(correlation_matrix.shape), k=1).astype(bool)
         correlation_matrix = correlation_matrix.mask(mask)
-        
-        # Replace NaN with spaces and format using apply
         formatted_matrix = correlation_matrix.apply(lambda col: col.apply(lambda x: f'{x:.5f}' if pd.notnull(x) else ' '))
         
-        # Save the formatted correlation matrix to a text file
-        mode = 'w' if prefix == 'Exports' else 'a'  # 'w' for first write, 'a' for subsequent appends
+        mode = 'w' if prefix == 'Exports' else 'a' 
         with open(correlations_file, mode) as f:
             f.write(f'Correlation Matrix (Pairwise) for {prefix}:\n')
             f.write(formatted_matrix.to_string(na_rep=' '))
-            f.write('\n\n')   # Add blank lines between matrices
+            f.write('\n\n')  
 
 
 # Define a function to create scatter plots and histograms
@@ -109,26 +109,26 @@ def create_visualizations(df_exports, df_imports, quantitative_features, qualita
             plt.close()
 
 def main():
-    # Load the datasets
+    # Loading the datasets
     exports_file = 'data_processed/Cleaned_Exports.csv'
     imports_file = 'data_processed/Cleaned_Imports.csv'
 
     df_exports = pd.read_csv(exports_file)
     df_imports = pd.read_csv(imports_file)
 
-    # Specify features to analyze 
+    # Features to analyze 
     quantitative_features = ['Dollar value', 'Fiscal quarter', 'Fiscal year']
     qualitative_features = ['Commodity name', 'Country']
 
-    # Compute summary statistics for exports and imports
+    # Computing summary statistics for exports and imports
     compute_summary_statistics(df_exports, quantitative_features, qualitative_features, prefix='Exports')
     compute_summary_statistics(df_imports, quantitative_features, qualitative_features, prefix='Imports')
 
-    # Compute pairwise correlations for exports and imports
+    # Computing pairwise correlations for exports and imports
     compute_correlations(df_exports, quantitative_features, prefix='Exports')
     compute_correlations(df_imports, quantitative_features, prefix='Imports')
 
-    # Create combined visualizations for exports and imports
+    # Creating combined visualizations for exports and imports
     create_visualizations(df_exports, df_imports, quantitative_features, qualitative_features)
 
     print("Summary statistics, correlations, and visualizations generated successfully.")

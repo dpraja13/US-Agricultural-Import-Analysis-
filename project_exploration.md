@@ -1,7 +1,7 @@
 #### SER594: Exploratory Data Munging and Visualization
 #### Topic: US Agricultural Import Analysis
 #### Author: Devanshi Prajapati
-#### Date: 10/21/2024
+#### Date: 10/22/2024
 
 ## Basic Questions
 **Dataset Author(s):** United States Department of Agriculture (USDA), Economic Research Service (ERS)
@@ -22,10 +22,10 @@
 
 **Dataset File Hash(es):** 
 1. *URL*: "https://www.ers.usda.gov/webdocs/DataFiles/100812/Top%205%20Agricultural%20Imports%20by%20State.csv?v=1388"\
-*MD5 Hash*: f2852362b6d2dd72d5f28ae4dd7dd9da\
+*MD5 Hash*: f2852362b6d2dd72d5f28ae4dd7dd9da
 
 1. *URL*: "https://www.ers.usda.gov/webdocs/DataFiles/100812/Top%205%20Agricultural%20Exports%20by%20State.csv?v=1388"\
-*MD5 Hash*: f5392119b0594cbd7ea114967aedbb8b\
+*MD5 Hash*: f5392119b0594cbd7ea114967aedbb8b
 
 ## Interpretable Records
 ### Record 1
@@ -70,17 +70,17 @@ As an official government source, the data is accurate and regularly updated, ma
 
 ## Data Transformations
 ### Transformation 1 - Removing Duplicates
-**Description:** The code removes duplicate rows from the dataset using df = df.drop_duplicates().
+**Description:** The code removes duplicate rows from the dataset using 'df = df.drop_duplicates()'.
 
 **Soundness Justification:** Removing duplicates improves data quality by eliminating redundant information without changing the semantics of the data. No usable data is discarded since unique information is retained. This operation does not introduce errors or outliers.
 
 ### Transformation 2 - Handling Missing Values
-**Description:** The code removes rows with missing values using df = df.dropna().
+**Description:** The code removes rows with missing values using 'df = df.dropna()'.
 
 **Soundness Justification:** This ensures that the remaining data is complete and reliable. While it does discard some data, it's justified when the number of missing values is small relative to the dataset size. It does not change the semantics of the remaining data or introduce errors.
 
 ### Transformation 3 - Correcting Data Types
-**Description:**  The code converts 'Fiscal year', 'Fiscal quarter', and 'Dollar value' to appropriate numeric types using pd.to_numeric().
+**Description:**  The code converts 'Fiscal year', 'Fiscal quarter', and 'Dollar value' to appropriate numeric types using 'pd.to_numeric()'.
 
 **Soundness Justification:** This ensures data consistency and enables proper numerical operations. It does not change the semantics of the data, as it's merely converting the representation, not the values themselves. Using errors='coerce' maintains data integrity by converting non-numeric values to NaN.
 
@@ -90,7 +90,7 @@ As an official government source, the data is accurate and regularly updated, ma
 **Soundness Justification:** This improves data consistency without changing the fundamental meaning of the data. Trimming spaces removes irrelevant whitespace, and applying title case ensures a uniform format. This does not discard usable data, introduce errors, or create outliers.
 
 ### Transformation 5 - Removing Rows with Fiscal Quarter 0
-**Description:** The code filters out rows where the 'Fiscal quarter' is 0 using df = df[df['Fiscal quarter'] != 0].
+**Description:** The code filters out rows where the 'Fiscal quarter' is 0 using 'df = df[df['Fiscal quarter'] != 0]'.
 
 **Soundness Justification:** This removes annual summary rows, which are redundant given the presence of quarterly data. It does not change the semantics of the remaining data or introduce errors. While it does discard some data, this data is a sum of other rows, so no unique information is lost. This transformation improves the consistency of the dataset for analysis focused on quarterly trends.
 
