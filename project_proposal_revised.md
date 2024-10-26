@@ -1,6 +1,6 @@
 #### SER594: Project Proposal
 
-#### US Agricultural Import Analysis
+#### US Agricultural Import and Export Analysis
 
 #### Anonymous
 
@@ -16,26 +16,27 @@ This project aims to conduct an analysis of state-level agricultural imports and
 
 #### Research Questions:
 
-RO1 - How do agricultural import and export patterns vary across different states?
-RO2 - Which commodities are most commonly imported and exported by different states?
-RO3 - What trends in import and export values suggest changes in state-level consumption or production patterns?
-RO4 - 
+RO1: To describe the trends within agricultural import and export patterns across different states. 
+RO2: To predict the value of agricultural imports and exports for a state based on its trade patterns.
+RO3: To defend the model for performing the prediction in RO2.
+RO4: To evaluate causal relationships implied by the RO2 model.
+RO5: To classify states into high, medium, or low agricultural import dependency categories based on their import-export ratios.
 
 #### Intellectual Merit:
 
-This project will provide new insights into the regional dynamics of agricultural imports and exports  within the United States. By analyzing state-level data, it can uncover localized trends in import or export preferences and needs, potentially reflecting differences in local agricultural production, consumer tastes, or economic factors. 
+This project will provide new insights into the regional dynamics of agricultural imports and exports within the United States. By analyzing state-level data, it can uncover localized trends in import or export preferences and needs, potentially reflecting differences in local agricultural production, consumer tastes, or economic factors. The predictive model will contribute to understanding the interplay between imports, and exports at the state level.
 
 #### Data Sourcing:
 
-The primary data source is the USDA Economic Research Service dataset on state-level agricultural imports. The data can be directly retrieved from the following website - https://www.ers.usda.gov/data-products/state-agricultural-trade-data/. It includes detailed information on imports and exports by state, fiscal year, country, commodity, and dollar value. This granular data allows for in-depth analysis of import patterns at both the state and national levels.
+The primary data source is the USDA Economic Research Service dataset on state-level agricultural imports and exports. The data can be directly retrieved from the USDA Economic Research Service website (https://www.ers.usda.gov/data-products/state-agricultural-trade-data/). It includes detailed information on imports and exports by state, fiscal year, country, commodity, and dollar value. This granular data allows for in-depth analysis of import and export patterns at state levels. 
 
 #### Background Knowledge:
 
 Following are some resources that will help gain more background information about Agricultural trade:
 
-- https://globaledge.msu.edu/industries/agriculture/background
-- https://www.usda.gov/media/blog/2024/02/21/100-years-agricultural-trade-century-growth-innovation-and-progress
-- https://www.aei.org/research-products/report/why-agricultural-trade-is-or-can-be-a-life-and-death-matter/
+- GlobalEdge: Agriculture Industry Background (https://globaledge.msu.edu/industries/agriculture/background)
+- USDA Blog: 100 Years of Agricultural Trade: A Century of Growth, Innovation, and Progress (https://www.usda.gov/media/blog/2024/02/21/100-years-agricultural-trade-century-growth-innovation-and-progress)
+- American Enterprise Institute: Why Agricultural Trade Is (or Can Be) a Life-and-Death Matter (https://www.aei.org/research-products/report/why-agricultural-trade-is-or-can-be-a-life-and-death-matter/)
 
 #### Related Work:
 
