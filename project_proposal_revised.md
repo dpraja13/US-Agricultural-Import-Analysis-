@@ -16,7 +16,7 @@ This project aims to conduct an analysis of state-level agricultural imports and
 
 #### Research Questions:
 
-- RO1: To describe the trends within agricultural import and export patterns across different states. 
+- RO1: To describe the trends within agricultural import and export patterns across different states.
 - RO2: To predict the value of agricultural imports and exports for a state based on its trade patterns.
 - RO3: To defend the model for performing the prediction in RO2.
 - RO4: To evaluate causal relationships implied by the RO2 model.
