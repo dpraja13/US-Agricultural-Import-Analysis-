@@ -16,11 +16,11 @@ This project aims to conduct an analysis of state-level agricultural imports and
 
 #### Research Questions:
 
-RO1: To describe the trends within agricultural import and export patterns across different states. 
-RO2: To predict the value of agricultural imports and exports for a state based on its trade patterns.
-RO3: To defend the model for performing the prediction in RO2.
-RO4: To evaluate causal relationships implied by the RO2 model.
-RO5: To classify states into high, medium, or low agricultural import dependency categories based on their import-export ratios.
+- RO1: To describe the trends within agricultural import and export patterns across different states. 
+- RO2: To predict the value of agricultural imports and exports for a state based on its trade patterns.
+- RO3: To defend the model for performing the prediction in RO2.
+- RO4: To evaluate causal relationships implied by the RO2 model.
+- RO5: To classify states into high, medium, or low agricultural import dependency categories based on their import-export ratios.
 
 #### Intellectual Merit:
 
@@ -40,11 +40,16 @@ Following are some resources that will help gain more background information abo
 
 #### Related Work:
 
-Below are two academic research papers that talk about US imports and it's variation based domestic and international variables:
+Below are references that talk about US imports and exports:
 
-1. https://www.jstor.org/stable/1910214
-1. https://www.jstor.org/stable/1910539
-1. 3rd link
-1. 4th link
-1. 5th link
-1. 6th link
+1. “Artificial Intelligence Methods for Evaluating Global Trade Flows” by International Finance Discussion Paper (https://doi.org/10.17016/ifdp.2020.1296).‌
+1. “U.S. State Goods Trade by Partner Tool” by International Trade Administration (https://www.trade.gov/data-visualization/us-state-goods-trade-partner-tool).
+1. “Statistical Analysis of U.S. Trade with the World” (https://www.bis.doc.gov/index.php/documents/technology-evaluation/ote-data-portal/country-analysis/2573-2019-statistical-analysis-of-u-s-trade-with-the-world/file).
+1. “Countries & Regions” by United States Trade Representative (https://ustr.gov/countries-regions).
+1. “Asian trade flows: Trends, patterns and prospects” by Japan and the World Economy (https://doi.org/10.1016/j.japwor.2012.01.003).
+1. “Trends in U.S. Trade and Comparative Advantage” by Brookings Papers on Economic Activity (https://doi.org/10.2307/2534225).
+‌
+‌
+‌
+‌
+‌
