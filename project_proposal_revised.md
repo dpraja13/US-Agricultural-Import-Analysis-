@@ -14,7 +14,7 @@ Price Trends, Domestic Consumption Trends, Trade Data Analysis
 
 This project aims to conduct an analysis of state-level agricultural imports and exports using data from the USDA Economic 
 Research Service. The dataset contains detailed information on agricultural imports and exports for different states, including 
-values for various product categories, countries of origin, Fiscal Quater, and Year. 
+values for various product categories, countries of origin, Fiscal Quater, and Year. It also finds trends between trade patterns and seanalities. 
 
 #### Research Questions:
 
