@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import joblib
 
 # Load the test data
@@ -16,19 +15,18 @@ data = pd.merge(imports_sum, exports_sum, on=['State', 'Fiscal year', 'Fiscal qu
 # Calculate import-export ratio
 data['import_export_ratio'] = data['Dollar value_import'] / data['Dollar value_export'].replace(0, 1)
 
-# Create seasonal features
-def get_season(month):
-    if month in [3, 4, 5]:
-        return 'Spring'
-    elif month in [6, 7, 8]:
-        return 'Summer'
-    elif month in [9, 10, 11]:
-        return 'Fall'
-    else:
+# Add seasonal features based on the fiscal quarter
+def get_season(quarter):
+    if quarter in [1]:
         return 'Winter'
+    elif quarter in [2]:
+        return 'Spring'
+    elif quarter in [3]:
+        return 'Summer'
+    else:
+        return 'Fall'
 
-data['month'] = pd.to_datetime(data['Fiscal year'].astype(str) + '-' + data['Fiscal quarter'].astype(str) + '-01').dt.month
-data['season'] = data['month'].map(get_season)
+data['season'] = data['Fiscal quarter'].map(get_season)
 
 # Load label encoders and encode State and season
 le_state = joblib.load('models/label_encoder_state.pkl')

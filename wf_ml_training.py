@@ -22,19 +22,18 @@ merged_data['import_export_ratio'] = merged_data['Dollar value_import'] / merged
 # Classify states into dependency categories
 merged_data['dependency_category'] = pd.qcut(merged_data['import_export_ratio'], q=3, labels=['Low', 'Medium', 'High'])
 
-# Create seasonal features
-def get_season(month):
-    if month in [3, 4, 5]:
-        return 'Spring'
-    elif month in [6, 7, 8]:
-        return 'Summer'
-    elif month in [9, 10, 11]:
-        return 'Fall'
-    else:
+# Add seasonal features based on the fiscal quarter
+def get_season(quarter):
+    if quarter in [1]:
         return 'Winter'
+    elif quarter in [2]:
+        return 'Spring'
+    elif quarter in [3]:
+        return 'Summer'
+    else:
+        return 'Fall'
 
-merged_data['month'] = pd.to_datetime(merged_data['Fiscal year'].astype(str) + '-' + merged_data['Fiscal quarter'].astype(str) + '-01').dt.month
-merged_data['season'] = merged_data['month'].map(get_season)
+merged_data['season'] = merged_data['Fiscal quarter'].map(get_season)
 
 # Encode categorical variables
 le_state = LabelEncoder()
@@ -62,12 +61,5 @@ joblib.dump(rf_classifier, 'models/agricultural_import_dependency_classifier.pkl
 joblib.dump(scaler, 'models/scaler.pkl')
 joblib.dump(le_state, 'models/label_encoder_state.pkl')
 joblib.dump(le_season, 'models/label_encoder_season.pkl')
-
-# Calculate and save feature importances
-feature_importance = pd.DataFrame({
-    'feature': X.columns,
-    'importance': rf_classifier.feature_importances_
-}).sort_values('importance', ascending=False)
-feature_importance.to_csv('models/feature_importances.csv', index=False)
 
 print("Training complete")
