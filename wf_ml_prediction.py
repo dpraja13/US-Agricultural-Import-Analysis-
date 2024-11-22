@@ -1,15 +1,13 @@
 import pandas as pd
-import pickle
 import os
-from wf_ml_training import get_season
 
-# Function to load a saved model
-def load_model(file_path):
-    with open(file_path, "rb") as f:
-        return pickle.load(f)
+# Ensure the "evaluation" directory exists
+os.makedirs("evaluation", exist_ok=True)
 
 # Function to calculate and predict import dependency by category without combining tables
 def predict_import_dependency_by_category_separate(imports_test, exports_test):
+    import joblib
+
     # Aggregate dollar values for imports and exports separately
     imports_grouped = imports_test.groupby(["State", "Commodity name"])["Dollar value"].sum()
     exports_grouped = exports_test.groupby(["State", "Commodity name"])["Dollar value"].sum()
@@ -30,8 +28,8 @@ def predict_import_dependency_by_category_separate(imports_test, exports_test):
     X_test = ratios_df[["Ratio"]]
 
     # Load the trained model and label encoder
-    model = load_model("models/import_dependency_by_category_model.pkl")
-    label_encoder = load_model("models/import_dependency_by_category_label_encoder.pkl")
+    model = joblib.load("models/import_dependency_by_category_model.joblib")
+    label_encoder = joblib.load("models/import_dependency_by_category_label_encoder.joblib")
 
     # Perform predictions
     predictions = model.predict(X_test)
@@ -41,27 +39,44 @@ def predict_import_dependency_by_category_separate(imports_test, exports_test):
     ratios_df["Predicted Label"] = predicted_labels
     return ratios_df
 
-# Function to analyze and predict seasonal fluctuations without combining tables
 def predict_seasonal_fluctuations_by_category_separate(data_test, trade_type):
+    import joblib
+        
+    def get_season(quarter):
+        seasons = {1: 'Winter', 2: 'Spring', 3: 'Summer', 4: 'Fall'}
+        return seasons.get(quarter, 'Unknown')
+
     # Add season information to the dataset
     data_test["Season"] = data_test["Fiscal quarter"].apply(get_season)
 
     # Aggregate dollar values by state, category, and season
-    seasonal_data = data_test.groupby(["State", "Commodity name", "Season"])["Dollar value"].sum()
+    seasonal_data = data_test.groupby(["State", "Commodity name", "Season"])["Dollar value"].sum().reset_index()  # Reset index here
 
-    # Prepare test features
-    X_test = pd.get_dummies(seasonal_data.index, drop_first=True)
-
-    # Load the trained model
-    model_path = f"models/seasonal_{trade_type.lower()}_by_category_model.pkl"
-    model = load_model(model_path)
-
+    # Create dummies for categorical features
+    seasonal_data_dummies = pd.get_dummies(seasonal_data[["State", "Commodity name", "Season"]], drop_first=True)
+    
+    # Load the trained model and column names
+    model_path = f"models/seasonal_{trade_type.lower()}_by_category_model.joblib"
+    columns_path = f"models/seasonal_{trade_type.lower()}_by_category_columns.joblib"
+    
+    model = joblib.load(model_path)
+    
+    # Load the columns used during training to ensure the same features are used in prediction
+    with open(columns_path, "rb") as f:
+        training_columns = joblib.load(f)
+    
+    # Align the test data columns with the training columns
+    seasonal_data_dummies = seasonal_data_dummies.reindex(columns=training_columns, fill_value=0)
+    
+    # Prepare the features for prediction
+    X_test = seasonal_data_dummies
+    
     # Perform predictions
     predictions = model.predict(X_test)
-    seasonal_data = seasonal_data.reset_index()  # Flatten the index for readable output
     seasonal_data["Predicted Season Index"] = predictions
 
     return seasonal_data
+
 
 # Main entry for predictions
 if __name__ == "__main__":
@@ -74,15 +89,11 @@ if __name__ == "__main__":
 
     # Predict import-export dependency
     dependency_predictions = predict_import_dependency_by_category_separate(imports_test, exports_test)
-    print("Import-Export Dependency Predictions (Separate):")
-    print(dependency_predictions.head())
+    dependency_predictions.to_csv("evaluation/import_dependency_predictions.csv", index=False)
 
     # Predict seasonal fluctuations for imports and exports separately
     seasonal_import_predictions = predict_seasonal_fluctuations_by_category_separate(imports_test, "Imports")
+    seasonal_import_predictions.to_csv("evaluation/seasonal_imports_predictions.csv", index=False)
+
     seasonal_export_predictions = predict_seasonal_fluctuations_by_category_separate(exports_test, "Exports")
-
-    print("\nSeasonal Import Predictions:")
-    print(seasonal_import_predictions.head())
-
-    print("\nSeasonal Export Predictions:")
-    print(seasonal_export_predictions.head())
+    seasonal_export_predictions.to_csv("evaluation/seasonal_imports_predictions.csv", index=False)
