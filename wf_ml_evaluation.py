@@ -4,14 +4,11 @@ from sklearn.utils import shuffle
 import os
 
 def split_data(import_csv, export_csv):
-    import_csv = os.path.join("data_processed", "Cleaned_Imports.csv")
-    export_csv = os.path.join("data_processed", "Cleaned_Exports.csv")
-
     imports = pd.read_csv(import_csv)
     exports = pd.read_csv(export_csv)
 
-    shuffle_imports = shuffle(imports, random_state=42)
-    shuffle_exports = shuffle(exports, random_state=42)
+    shuffle_imports = shuffle(imports)
+    shuffle_exports = shuffle(exports)
 
     samples_im = len(shuffle_imports)
     training_im = int(samples_im * 0.8)

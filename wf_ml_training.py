@@ -1,65 +1,78 @@
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-import joblib
+from sklearn.preprocessing import LabelEncoder
+import pickle
 import os
 
-# Load and preprocess data
-import_train = pd.read_csv('data_processed/import_train.csv')
-export_train = pd.read_csv('data_processed/export_train.csv')
+# Ensure the "models" directory exists
+os.makedirs("models", exist_ok=True)
 
-# Group by State and Fiscal year to calculate total import and export values
-imports_sum = import_train.groupby(['State', 'Fiscal year', 'Fiscal quarter'])['Dollar value'].sum().reset_index()
-exports_sum = export_train.groupby(['State', 'Fiscal year', 'Fiscal quarter'])['Dollar value'].sum().reset_index()
-
-# Merge import and export data
-merged_data = pd.merge(imports_sum, exports_sum, on=['State', 'Fiscal year', 'Fiscal quarter'], suffixes=('_import', '_export'))
-
-# Calculate import-export ratio
-merged_data['import_export_ratio'] = merged_data['Dollar value_import'] / merged_data['Dollar value_export'].replace(0, 1)
-
-# Classify states into dependency categories
-merged_data['dependency_category'] = pd.qcut(merged_data['import_export_ratio'], q=3, labels=['Low', 'Medium', 'High'])
-
-# Add seasonal features based on the fiscal quarter
 def get_season(quarter):
-    if quarter in [1]:
-        return 'Winter'
-    elif quarter in [2]:
-        return 'Spring'
-    elif quarter in [3]:
-        return 'Summer'
-    else:
-        return 'Fall'
+    seasons = {1: 'Winter', 2: 'Spring', 3: 'Summer', 4: 'Fall'}
+    return seasons.get(quarter, 'Unknown')
 
-merged_data['season'] = merged_data['Fiscal quarter'].map(get_season)
+# Function 1: Classify import dependency by category
+def classify_import_dependency_by_category(imports, exports):
+    # Aggregate dollar values by state and category (Commodity name)
+    imports_grouped = imports.groupby(["State", "Commodity name"])["Dollar value"].sum()
+    exports_grouped = exports.groupby(["State", "Commodity name"])["Dollar value"].sum()
+    
+    # Merge import and export data
+    combined = pd.concat([imports_grouped, exports_grouped], axis=1, keys=["Imports", "Exports"]).fillna(0)
+    
+    # Calculate import-to-export ratio
+    combined["Ratio"] = combined["Imports"] / combined["Exports"]
+    combined["Ratio"] = combined["Ratio"].replace([np.inf, -np.inf], 0)
+    
+    # Label states and categories as high, medium, or low dependency
+    labels = pd.qcut(combined["Ratio"], q=3, labels=["Low", "Medium", "High"])
+    combined["Label"] = labels
+    
+    # Encode labels
+    le = LabelEncoder()
+    combined["Encoded Label"] = le.fit_transform(combined["Label"])
+    
+    # Train a classifier
+    X = combined[["Ratio"]]
+    y = combined["Encoded Label"]
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X, y)
+    
+    # Save the model and label encoder
+    with open("models/import_dependency_by_category_model.pkl", "wb") as f:
+        pickle.dump(model, f)
+    with open("models/import_dependency_by_category_label_encoder.pkl", "wb") as f:
+        pickle.dump(le, f)
 
-# Encode categorical variables
-le_state = LabelEncoder()
-le_season = LabelEncoder()
-merged_data['State_encoded'] = le_state.fit_transform(merged_data['State'])
-merged_data['season_encoded'] = le_season.fit_transform(merged_data['season'])
+# Function 2: Analyze seasonal fluctuations by category
+def analyze_seasonal_fluctuations_by_category(data, trade_type):
+    data["Season"] = data["Fiscal quarter"].apply(get_season)
+    
+    # Aggregate by state, category, and season
+    seasonal_data = data.groupby(["State", "Commodity name", "Season"])["Dollar value"].sum().unstack(fill_value=0)
+    
+    # Train a model to predict seasonal dollar values
+    X = pd.get_dummies(seasonal_data.index)
+    y = seasonal_data.values
+    
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X, y.argmax(axis=1))
+    
+    # Save the model
+    filename = f"models/seasonal_{trade_type.lower()}_by_category_model.pkl"
+    with open(filename, "wb") as f:
+        pickle.dump(model, f)
 
-# Prepare features and target
-X = merged_data[['Dollar value_import', 'Dollar value_export', 'import_export_ratio', 'season_encoded', 'State_encoded']]
-y = merged_data['dependency_category']
-
-# Scale the features
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Initialize and train the Random Forest Classifier
-rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
-rf_classifier.fit(X_scaled, y)
-
-# Ensure the 'models' directory exists
-os.makedirs('models', exist_ok=True)
-
-# Save the model, scaler, and label encoders
-joblib.dump(rf_classifier, 'models/agricultural_import_dependency_classifier.pkl')
-joblib.dump(scaler, 'models/scaler.pkl')
-joblib.dump(le_state, 'models/label_encoder_state.pkl')
-joblib.dump(le_season, 'models/label_encoder_season.pkl')
-
-print("Training complete")
+# Main entry for testing
+if __name__ == "__main__":
+    # Load training data
+    imports_train = pd.read_csv("data_processed/import_train.csv")
+    exports_train = pd.read_csv("data_processed/export_train.csv")
+    
+    # Call function 1
+    classify_import_dependency_by_category(imports_train, exports_train)
+    
+    # Call function 2 for imports and exports separately
+    analyze_seasonal_fluctuations_by_category(imports_train, "Imports")
+    analyze_seasonal_fluctuations_by_category(exports_train, "Exports")
