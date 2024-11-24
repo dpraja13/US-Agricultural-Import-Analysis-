@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 import os
+#from wf_ml_evaluation import dependency1, dependency2, dependency3, dependency4, seasonal1, seasonal2, seasonal3, seasonal4
 
 # Ensure the "models" directory exists
 os.makedirs("models", exist_ok=True)
 
 # Function 1: Classify import dependency by category
-def classify_import_dependency(imports, exports):
+def classify_import_dependency(imports, exports, mod = None):
     import joblib
     from sklearn.preprocessing import LabelEncoder, OneHotEncoder
     from sklearn.compose import ColumnTransformer
@@ -61,22 +62,99 @@ def classify_import_dependency(imports, exports):
     )
 
     # Define pipeline with preprocessing and model
-    model = Pipeline(steps=[
-        ("preprocessor", preprocessor),
-        ("classifier", RandomForestClassifier(random_state=42))
-    ])
+    if mod == None:
+        model = Pipeline(steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(
+    n_estimators=100,        # Default number of trees
+    max_depth=10,            # Moderate depth to avoid overfitting
+    min_samples_split=2,     # Default splitting criterion
+    min_samples_leaf=1,      # Default leaf size
+    random_state=42
+))
+        ])
+
+    elif mod == 'dependency2':
+        model = Pipeline(steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(
+    n_estimators=200,        # More trees for better ensemble learning
+    max_depth=20,            # Allow deeper splits for more complex patterns
+    min_samples_split=5,     # Increase minimum split samples for broader splits
+    min_samples_leaf=3,      # Require more samples per leaf
+    random_state=42
+))
+        ])
+
+    elif mod == 'dependency3':
+        model = Pipeline(steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(
+    n_estimators=150,        # Moderate number of trees
+    max_depth=5,             # Restrict depth for simplicity
+    min_samples_split=10,    # Require larger splits to reduce overfitting
+    min_samples_leaf=5,      # Larger leaf size to generalize better
+    random_state=42
+))
+        ])
+
+    elif mod == 'dependency4':
+        model = Pipeline(steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(
+    n_estimators=300,        # High number of trees for stability
+    max_depth=None,          # No depth limit to capture complex patterns
+    min_samples_split=2,     # Default split size to allow detailed splits
+    min_samples_leaf=1,      # Allow small leaves for capturing fine details
+    random_state=42
+))
+        ])
 
     # Train the model
     model.fit(X, y)
 
-    # Save the model and label encoder
-    with open("models/import_dependency.joblib", "wb") as f:
+    '''if mod is None:
+        classifier = RandomForestClassifier(
+            n_estimators=100,
+            max_depth=10,
+            min_samples_split=2,
+            min_samples_leaf=1,
+            random_state=42
+        )
+    elif isinstance(mod, RandomForestClassifier):
+        classifier = mod
+    else:
+        raise ValueError("Invalid model type. Expected RandomForestClassifier or None.")
+
+    # Define pipeline with preprocessing and model
+    model = Pipeline(steps=[
+        ("preprocessor", preprocessor),
+        ("classifier", classifier)
+    ])
+
+    # Train the model
+    model.fit(X, y)'''
+
+    if mod is None:
+        filename = "models/import_dependency_None.joblib"
+    elif mod == 'dependency2':
+        filename = f"models/import_dependency_dependency2.joblib"
+    elif mod == 'dependency3':
+        filename = f"models/import_dependency_dependency3.joblib"
+    elif mod == 'dependency4':
+        filename = f"models/import_dependency_dependency4.joblib"
+    else:
+        raise ValueError("Unknwn Model")
+
+    with open(filename, "wb") as f:
         joblib.dump(model, f)
-    with open("models/import_dependency_label_encoder.joblib", "wb") as f:
+
+    label_encoder = "models/import_dependency_label_encoder.joblib"
+    with open(label_encoder, "wb") as f:
         joblib.dump(le, f)
 
 # Function 2: Analyze seasonal fluctuations by category
-def analyze_seasonal_fluctuations(data, trade_type):
+def analyze_seasonal_fluctuations(data, trade_type, mod = None):
     import joblib
     import pandas as pd
     from sklearn.svm import SVR
@@ -109,12 +187,67 @@ def analyze_seasonal_fluctuations(data, trade_type):
     y_series.to_csv(f"models/y_train_seasonal_{trade_type.lower()}.csv", index=False)
     
     # Define and train the XGBoost model
-    #model = SVR(kernel='rbf', C=100, gamma=0.1, epsilon=0.1)
-    model = SVR(kernel='rbf', C=50, gamma=0.7, epsilon=0.7)
+    if mod == None:
+        model = SVR(
+    kernel='rbf',      # Radial Basis Function, default kernel
+    C=1.0,             # Default regularization
+    epsilon=0.1,       # Default margin of tolerance
+    gamma='scale')     # Automatic scaling of kernel coefficient
+
+    elif mod == 'seasonal2':
+        model = SVR(
+    kernel='rbf',      # RBF kernel
+    C=10.0,            # Stronger regularization for high complexity
+    epsilon=0.2,       # Broader tolerance for errors
+    gamma='scale'      # Automatically scaled kernel coefficient
+)
+    
+    elif mod == 'seasonal3':
+        model = SVR(
+    kernel='poly',     # Polynomial kernel for non-linear patterns
+    C=5.0,             # Moderate regularization
+    epsilon=0.1,       # Default tolerance for errors
+    gamma='auto',      # Use 1/n_features for kernel coefficient
+    degree=3           # Default degree for polynomial kernel
+)
+
+    
+    elif mod == 'seasonal4':
+        model = SVR(
+    kernel='sigmoid',  # Sigmoid kernel for specific relationships
+    C=0.5,             # Lower regularization for simplicity
+    epsilon=0.15,      # Moderate tolerance for errors
+    gamma='scale'      # Automatically scaled kernel coefficient
+)
+
+    
     model.fit(X, y)
+    '''if mod is None:
+        model = SVR(
+            kernel='rbf',
+            C=1.0,
+            epsilon=0.1,
+            gamma='scale'
+        )
+    elif isinstance(mod, SVR):
+        model = mod
+    else:
+        raise ValueError("Invalid model type. Expected SVR or None.")
+
+    # Train the model
+    model.fit(X, y)'''
     
     # Save the model and the feature column names used during training
-    filename = f"models/seasonal_{trade_type.lower()}.joblib"
+    
+    if mod is None:
+        filename = f"models/seasonal_{trade_type.lower()}_None.joblib"
+    elif mod == 'seasonal2':
+        filename = f"models/seasonal_{trade_type.lower()}_seasonal2.joblib"
+    elif mod == 'seasonal3':
+        filename = f"models/seasonal_{trade_type.lower()}_seasonal3.joblib"
+    elif mod == 'seasonal4':
+        filename = f"models/seasonal_{trade_type.lower()}_seasonal4.joblib"
+
     with open(filename, "wb") as f:
         joblib.dump(model, f, compress=9)
     

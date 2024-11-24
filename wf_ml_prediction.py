@@ -1,12 +1,14 @@
 import pandas as pd
 import os
+#from wf_ml_evaluation import dependency1, dependency2, dependency3, dependency4, seasonal1, seasonal2, seasonal3, seasonal4
+
 
 # Ensure the "evaluation" directory exists
 os.makedirs("evaluation", exist_ok=True)
 
 # Function to calculate and predict import dependency by category without combining tables
 
-def predict_import_dependency(imports_test, exports_test):
+def predict_import_dependency(imports_test, exports_test, mod = None):
     import joblib
     import pandas as pd
     import numpy as np
@@ -24,14 +26,23 @@ def predict_import_dependency(imports_test, exports_test):
     combined_test["Ratio"] = combined_test["Ratio"].replace([float("inf"), -float("inf")], 0).fillna(0)
 
     # Load the trained model and label encoder
-    model = joblib.load("models/import_dependency.joblib")
+    if mod is None:
+        model_filename = "models/import_dependency_None.joblib"
+    elif mod == 'dependency2':
+        model_filename = "models/import_dependency_dependency2.joblib"
+    elif mod == 'dependency3':
+        model_filename = "models/import_dependency_dependency3.joblib"
+    elif mod == 'dependency4':
+        model_filename = "models/import_dependency_dependency4.joblib"
+
+    model = joblib.load(model_filename)
     label_encoder = joblib.load("models/import_dependency_label_encoder.joblib")
 
     # Prepare input features (X_test) for the model
     X_test = combined_test[["State", "Fiscal year", "Fiscal quarter", "Ratio"]]
     
     # Save X_test to models folder
-    X_test.to_csv("models/X_test_import_dependency.csv", index=False)
+    X_test.to_csv(f"models/X_test_import_dependency.csv", index=False)
     
     # Generate the "Encoded Label" column for the test set (like in training)
     bins = [0, 0.75, 2.0, float('inf')]
@@ -45,7 +56,7 @@ def predict_import_dependency(imports_test, exports_test):
     y_test = combined_test["Encoded Label"]
     
     # Save y_test to models folder
-    y_test.to_csv("models/y_test_import_dependency.csv", index=False)
+    y_test.to_csv(f"models/y_test_import_dependencys.csv", index=False)
 
     # Perform predictions
     predictions = model.predict(X_test)
@@ -53,9 +64,19 @@ def predict_import_dependency(imports_test, exports_test):
 
     # Add predictions to the results
     combined_test["Predicted Label"] = predicted_labels
-    return combined_test
+    
+    if mod is None:
+        output_filename = "evaluation/import_dependency_predictions_None.csv"
+    elif mod == 'dependency2':
+        output_filename = "evaluation/import_dependency_predictions_dependency2.csv"
+    elif mod == 'dependency3':
+        output_filename = "evaluation/import_dependency_predictions_dependency3.csv"
+    elif mod == 'dependency4':
+        output_filename = "evaluation/import_dependency_predictions_dependency4.csv"
+        
+    combined_test.to_csv(output_filename, index=False)
 
-def predict_seasonal_fluctuations(data_test, trade_type):
+def predict_seasonal_fluctuations(data_test, trade_type, mod = None):
     import joblib
     import pandas as pd
         
@@ -82,11 +103,19 @@ def predict_seasonal_fluctuations(data_test, trade_type):
     pd.DataFrame(y_test, columns=["Dollar value"]).to_csv(f"models/y_test_seasonal_{trade_type.lower()}.csv", index=False)
 
     # Load the trained model and column names
-    model_path = f"models/seasonal_{trade_type.lower()}.joblib"  # Match the trained model file path
+    if mod is None:
+        model_filename = f"models/seasonal_{trade_type.lower()}_None.joblib"
+    elif mod == 'seasonal2':
+        model_filename = f"models/seasonal_{trade_type.lower()}_seasonal2.joblib"
+    elif mod == 'seasonal3':
+        model_filename = f"models/seasonal_{trade_type.lower()}_seasonal3.joblib"
+    elif mod == 'seasonal4':
+        model_filename = f"models/seasonal_{trade_type.lower()}_seasonal4.joblib"
+
     columns_path = f"models/seasonal_columns_{trade_type.lower()}.joblib"  # Match the columns file path
     
     # Load the trained model
-    model = joblib.load(model_path)
+    model = joblib.load(model_filename)
     
     # Load the columns used during training to ensure the same features are used in prediction
     with open(columns_path, "rb") as f:
@@ -102,7 +131,16 @@ def predict_seasonal_fluctuations(data_test, trade_type):
     predictions = model.predict(X_test)
     seasonal_data["Predicted Dollar Value"] = predictions  # Adding predictions to the dataframe
 
-    return seasonal_data
+    if mod is None:
+        output_filename = f"evaluation/seasonal_{trade_type.lower()}_predictions_None.csv"
+    elif mod == 'seasonal2':
+        output_filename = f"evaluation/seasonal_{trade_type.lower()}_predictions_seasonal2.csv"
+    elif mod == 'seasonal3':
+        output_filename = f"evaluation/seasonal_{trade_type.lower()}_predictions_seasonal3.csv"
+    elif mod == 'seasonal4':
+        output_filename = f"evaluation/seasonal_{trade_type.lower()}_predictions_seasonal4.csv"
+    
+    seasonal_data.to_csv(output_filename, index=False)
 
 # Main entry for predictions
 if __name__ == "__main__":
@@ -116,11 +154,9 @@ if __name__ == "__main__":
 
     # Predict import-export dependency
     dependency_predictions = predict_import_dependency(imports_test, exports_test)
-    dependency_predictions.to_csv("evaluation/import_dependency_predictions.csv", index=False)
 
     # Predict seasonal fluctuations for imports and exports separately
     seasonal_import_predictions = predict_seasonal_fluctuations(imports_test, "Imports")
-    seasonal_import_predictions.to_csv("evaluation/seasonal_imports_predictions.csv", index=False)
 
     #seasonal_export_predictions = predict_seasonal_fluctuations(exports_test, "Exports")
     #seasonal_export_predictions.to_csv("evaluation/seasonal_exports_predictions.csv", index=False)
