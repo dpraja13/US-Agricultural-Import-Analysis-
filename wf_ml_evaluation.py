@@ -35,35 +35,36 @@ def train_and_predict():
 
     with open("wf_ml_prediction.py") as predictor:
         exec(predictor.read())
-        
+
 def model_evaluation():
-    # Load the training and testing data (X_train, y_train, X_test, y_test)
-    X_train_import = pd.read_csv("models/X_test_import_dependency.csv")
-    y_train_import = pd.read_csv("models/y_test_import_dependency.csv")
-    X_test_import = pd.read_csv("models/X_test_import_dependency.csv")
-    y_test_import = pd.read_csv("models/y_test_import_dependency.csv")
-
-    X_train_seasonal = pd.read_csv("models/X_test_seasonal_imports.csv")
-    y_train_seasonal = pd.read_csv("models/y_test_seasonal_imports.csv")
-    X_test_seasonal = pd.read_csv("models/X_test_seasonal_imports.csv")
-    y_test_seasonal = pd.read_csv("models/y_test_seasonal_imports.csv")
-
-    # Load models
-    import_dependency_model = joblib.load("models/import_dependency.joblib")
-    seasonal_model = joblib.load("models/seasonal_imports.joblib")
+    # Load the saved model results from CSV files
+    import_results = pd.read_csv("evaluation/import_dependency_predictions.csv")
+    seasonal_results = pd.read_csv("evaluation/seasonal_imports_predictions.csv")
 
     # Initialize result string to store evaluation metrics
     result_str = ""
 
     ### 1. Metrics for Import Dependency Model (Classification)
-    # Predict the labels for the test set
-    y_pred_import = import_dependency_model.predict(X_test_import)
+    # Get true labels and predicted labels
+    y_true_import = import_results['Encoded Label']
+    y_pred_import = import_results['Predicted Label']
+
+    # Mapping categorical labels to numeric labels (if needed)
+    label_mapping = {"Low": 0, "Medium": 1, "High": 2}
+    y_true_import = y_true_import.map(label_mapping)
+    y_pred_import = y_pred_import.map(label_mapping)
+
+    # Check for any missing values after mapping
+    if y_true_import.isnull().any() or y_pred_import.isnull().any():
+        print("Warning: There are missing values after mapping labels.")
+        y_true_import = y_true_import.fillna(0)  # Fill with default value if needed
+        y_pred_import = y_pred_import.fillna(0)
 
     # Calculate accuracy, precision, recall, f1-score
-    accuracy = accuracy_score(y_test_import, y_pred_import)
-    precision = precision_score(y_test_import, y_pred_import, average='weighted', zero_division=0)
-    recall = recall_score(y_test_import, y_pred_import, average='weighted')
-    f1 = f1_score(y_test_import, y_pred_import, average='weighted')
+    accuracy = accuracy_score(y_true_import, y_pred_import)
+    precision = precision_score(y_true_import, y_pred_import, average='weighted', zero_division=0)
+    recall = recall_score(y_true_import, y_pred_import, average='weighted')
+    f1 = f1_score(y_true_import, y_pred_import, average='weighted')
 
     result_str += "### Import Dependency Model (Classification) Metrics ###\n"
     result_str += f"Accuracy: {accuracy:.4f}\n"
@@ -72,13 +73,14 @@ def model_evaluation():
     result_str += f"F1 Score (Weighted): {f1:.4f}\n\n"
 
     ### 2. Metrics for Seasonal Model (Regression)
-    # Predict the dollar values for the test set
-    y_pred_seasonal = seasonal_model.predict(X_test_seasonal)
+    # Get true values and predicted values for dollar values
+    y_true_seasonal = seasonal_results['Dollar value']
+    y_pred_seasonal = seasonal_results['Predicted Dollar Value']
 
     # Calculate RMSE, MAE, and R-squared
-    rmse = np.sqrt(mean_squared_error(y_test_seasonal, y_pred_seasonal))
-    mae = mean_absolute_error(y_test_seasonal, y_pred_seasonal)
-    r2 = r2_score(y_test_seasonal, y_pred_seasonal)
+    rmse = np.sqrt(mean_squared_error(y_true_seasonal, y_pred_seasonal))
+    mae = mean_absolute_error(y_true_seasonal, y_pred_seasonal)
+    r2 = r2_score(y_true_seasonal, y_pred_seasonal)
 
     result_str += "### Seasonal Model (Regression) Metrics ###\n"
     result_str += f"Root Mean Squared Error (RMSE): {rmse:.4f}\n"
@@ -90,7 +92,6 @@ def model_evaluation():
         f.write(result_str)
 
     print("Evaluation metrics have been saved to 'evaluation/summary.txt'")
-
 
 def alternative_models():
     #code for the alternative models possible

@@ -1,0 +1,10 @@
+### Import Dependency Model (Classification) Metrics ###
+Accuracy: 0.4654
+Precision (Weighted): 1.0000
+Recall (Weighted): 0.4654
+F1 Score (Weighted): 0.6352
+
+### Seasonal Model (Regression) Metrics ###
+Root Mean Squared Error (RMSE): 253180651.9469
+Mean Absolute Error (MAE): 70515859.1522
+R-squared: -0.0192

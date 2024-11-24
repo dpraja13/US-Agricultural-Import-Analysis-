@@ -44,8 +44,13 @@ def classify_import_dependency(imports, exports):
     X = combined[categorical_features + numerical_features]
     y = combined["Encoded Label"]
 
-    X.to_csv("models/X_train_import_dependency.csv", index=False)
-    y.to_csv("models/y_train_import_dependency.csv", index=False)
+        # Convert X (features) to DataFrame before saving
+    X_df = pd.DataFrame(X)  # Convert numpy array to DataFrame
+    X_df.to_csv("models/X_train_import_dependency.csv", index=False)
+
+    # Convert y (target) to Series before saving
+    y_series = pd.Series(y)  # Convert numpy array to Series
+    y_series.to_csv("models/y_train_import_dependency.csv", index=False)
 
     # Preprocessing: One-hot encode categorical features
     preprocessor = ColumnTransformer(
@@ -73,8 +78,8 @@ def classify_import_dependency(imports, exports):
 # Function 2: Analyze seasonal fluctuations by category
 def analyze_seasonal_fluctuations(data, trade_type):
     import joblib
-    from xgboost import XGBRegressor
     import pandas as pd
+    from sklearn.svm import SVR
     
     def get_season(quarter):
         seasons = {1: 'Winter', 2: 'Spring', 3: 'Summer', 4: 'Fall'}
@@ -95,11 +100,17 @@ def analyze_seasonal_fluctuations(data, trade_type):
     X = seasonal_data_dummies
     y = seasonal_data_values
 
-    X.to_csv(f"models/X_train_seasonal_{trade_type.lower()}.csv", index=False)
-    y.to_csv(f"models/y_train_seasonal_{trade_type.lower()}.csv", index=False)
+    # Convert X (features) to DataFrame before saving
+    X_df = pd.DataFrame(X)  # Convert numpy array to DataFrame
+    X_df.to_csv(f"models/X_train_seasonal_{trade_type.lower()}.csv", index=False)
+
+    # Convert y (target) to Series before saving
+    y_series = pd.Series(y)  # Convert numpy array to Series
+    y_series.to_csv(f"models/y_train_seasonal_{trade_type.lower()}.csv", index=False)
     
     # Define and train the XGBoost model
-    model = XGBRegressor(random_state=30)
+    #model = SVR(kernel='rbf', C=100, gamma=0.1, epsilon=0.1)
+    model = SVR(kernel='rbf', C=50, gamma=0.7, epsilon=0.7)
     model.fit(X, y)
     
     # Save the model and the feature column names used during training

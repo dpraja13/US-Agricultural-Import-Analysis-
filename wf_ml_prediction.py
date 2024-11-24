@@ -5,9 +5,11 @@ import os
 os.makedirs("evaluation", exist_ok=True)
 
 # Function to calculate and predict import dependency by category without combining tables
+
 def predict_import_dependency(imports_test, exports_test):
     import joblib
     import pandas as pd
+    import numpy as np
 
     # Aggregate dollar values for imports and exports
     imports_grouped = imports_test.groupby(["State", "Fiscal year", "Fiscal quarter"])["Dollar value"].sum()
@@ -31,7 +33,15 @@ def predict_import_dependency(imports_test, exports_test):
     # Save X_test to models folder
     X_test.to_csv("models/X_test_import_dependency.csv", index=False)
     
-    # Prepare target (y_test) by using the encoded labels from the model's target
+    # Generate the "Encoded Label" column for the test set (like in training)
+    bins = [0, 0.75, 2.0, float('inf')]
+    labels = ['Low', 'Medium', 'High']
+    combined_test['Dependency Level'] = pd.cut(combined_test['Ratio'], bins=bins, labels=labels, include_lowest=True)
+    
+    # Encode the dependency level
+    combined_test["Encoded Label"] = label_encoder.transform(combined_test["Dependency Level"])
+
+    # Prepare target (y_test) using the encoded labels from the model's target
     y_test = combined_test["Encoded Label"]
     
     # Save y_test to models folder
