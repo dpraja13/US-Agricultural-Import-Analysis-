@@ -38,10 +38,7 @@ def predict_import_dependency(imports_test, exports_test, mod = None):
 
     # Prepare input features (X_test) for the model
     X_test = combined_test[["State", "Fiscal year", "Fiscal quarter", "Ratio"]]
-    
-    # Save X_test to models folder
-    X_test.to_csv(f"models/X_test_import_dependency.csv", index=False)
-    
+        
     # Generate the "Encoded Label" column for the test set (like in training)
     bins = [0, 0.75, 2.0, float('inf')]
     labels = ['Low', 'Medium', 'High']
@@ -49,13 +46,7 @@ def predict_import_dependency(imports_test, exports_test, mod = None):
     
     # Encode the dependency level
     combined_test["Encoded Label"] = label_encoder.transform(combined_test["Dependency Level"])
-
-    # Prepare target (y_test) using the encoded labels from the model's target
-    y_test = combined_test["Encoded Label"]
     
-    # Save y_test to models folder
-    y_test.to_csv(f"models/y_test_import_dependencys.csv", index=False)
-
     # Perform predictions
     predictions = model.predict(X_test)
     predicted_labels = label_encoder.inverse_transform(predictions)
@@ -90,16 +81,7 @@ def predict_seasonal_fluctuations(data_test, trade_type, mod = None):
 
     # Create dummies for categorical features
     seasonal_data_dummies = pd.get_dummies(seasonal_data[["State", "Commodity name", "Fiscal year", "Fiscal quarter", "Season"]], drop_first=True)
-    
-    # Save X_test for seasonal fluctuations to models folder
-    seasonal_data_dummies.to_csv(f"models/X_test_seasonal_{trade_type.lower()}.csv", index=False)
-
-    seasonal_data_values = seasonal_data["Dollar value"].values  # Extract the values column separately
-    y_test = seasonal_data_values  # Target values for prediction
-    
-    # Save y_test for seasonal fluctuations to models folder
-    pd.DataFrame(y_test, columns=["Dollar value"]).to_csv(f"models/y_test_seasonal_{trade_type.lower()}.csv", index=False)
-
+        
     # Load the trained model and column names
     if mod == 'seasonal1':
         model_filename = f"models/seasonal_{trade_type.lower()}_seasonal1.joblib"
@@ -149,4 +131,3 @@ if __name__ == "__main__":
     # Load test data
     imports_test = pd.read_csv("data_processed/import_test.csv")
     exports_test = pd.read_csv("data_processed/export_test.csv")
-
