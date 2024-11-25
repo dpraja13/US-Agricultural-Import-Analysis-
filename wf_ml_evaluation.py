@@ -1,8 +1,6 @@
 from sklearn.utils import shuffle
 import os
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVR
 
 def split_data(import_csv, export_csv):
     imports = pd.read_csv(import_csv)
@@ -36,11 +34,11 @@ def train_and_predict():
     exports_test = pd.read_csv("data_processed/export_test.csv")
 
     # Train and predict default models
-    classify_import_dependency(imports_train, exports_train)
-    analyze_seasonal_fluctuations(imports_train, "Imports")
+    classify_import_dependency(imports_train, exports_train, 'dependency1')
+    analyze_seasonal_fluctuations(imports_train, "Imports", 'seasonal1')
     
-    predict_import_dependency(imports_test, exports_test)
-    predict_seasonal_fluctuations(imports_test, "Imports")
+    predict_import_dependency(imports_test, exports_test, 'dependency1')
+    predict_seasonal_fluctuations(imports_test, "Imports", 'seasonal1')
 
 def alternative_models():
     from wf_ml_training import classify_import_dependency, analyze_seasonal_fluctuations
@@ -70,11 +68,12 @@ def model_evaluation():
     dependency_results = {}
     seasonal_results = {}
 
-    dependency_models = ['None', 'dependency2', 'dependency3', 'dependency4']
-    seasonal_models = ['None', 'seasonal2', 'seasonal3', 'seasonal4']
+    dependency_models = ['dependency1', 'dependency2', 'dependency3', 'dependency4']
+    seasonal_models = ['seasonal1', 'seasonal2', 'seasonal3', 'seasonal4']
 
     for model in dependency_models:
         import_results = pd.read_csv(f"evaluation/import_dependency_predictions_{model}.csv")
+
         y_true_import = import_results['Encoded Label']
         y_pred_import = import_results['Predicted Label']
 
@@ -83,25 +82,22 @@ def model_evaluation():
         y_pred_import = y_pred_import.map(label_mapping).fillna(0)
 
         dependency_results[model] = {
-            'Accuracy': accuracy_score(y_true_import, y_pred_import),
-            'Precision': precision_score(y_true_import, y_pred_import, average='weighted'),
-            'Recall': recall_score(y_true_import, y_pred_import, average='weighted'),
-            'F1 Score': f1_score(y_true_import, y_pred_import, average='weighted')
+            'Accuracy': round(accuracy_score(y_true_import, y_pred_import),8),
+            'F1 Score': round(f1_score(y_true_import, y_pred_import, average='weighted'),8)
         }
 
     for model in seasonal_models:
         seasonal_data = pd.read_csv(f"evaluation/seasonal_imports_predictions_{model}.csv")
+
         y_true_seasonal = seasonal_data['Dollar value']
         y_pred_seasonal = seasonal_data['Predicted Dollar Value']
 
         rmse = np.sqrt(mean_squared_error(y_true_seasonal, y_pred_seasonal))
-        mae = mean_absolute_error(y_true_seasonal, y_pred_seasonal)
         r2 = r2_score(y_true_seasonal, y_pred_seasonal)
 
         seasonal_results[model] = {
-            'RMSE': rmse,
-            'MAE': mae,
-            'R-squared': r2
+            'RMSE': round(rmse,8),
+            'R-squared': round(r2,8)
         }
 
     dependency_df = pd.DataFrame.from_dict(dependency_results, orient='index')

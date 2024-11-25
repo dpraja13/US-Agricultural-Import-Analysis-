@@ -1,7 +1,5 @@
 import pandas as pd
 import os
-#from wf_ml_evaluation import dependency1, dependency2, dependency3, dependency4, seasonal1, seasonal2, seasonal3, seasonal4
-
 
 # Ensure the "evaluation" directory exists
 os.makedirs("evaluation", exist_ok=True)
@@ -26,8 +24,8 @@ def predict_import_dependency(imports_test, exports_test, mod = None):
     combined_test["Ratio"] = combined_test["Ratio"].replace([float("inf"), -float("inf")], 0).fillna(0)
 
     # Load the trained model and label encoder
-    if mod is None:
-        model_filename = "models/import_dependency_None.joblib"
+    if mod == 'dependency1':
+        model_filename = "models/import_dependency_dependency1.joblib"
     elif mod == 'dependency2':
         model_filename = "models/import_dependency_dependency2.joblib"
     elif mod == 'dependency3':
@@ -65,8 +63,8 @@ def predict_import_dependency(imports_test, exports_test, mod = None):
     # Add predictions to the results
     combined_test["Predicted Label"] = predicted_labels
     
-    if mod is None:
-        output_filename = "evaluation/import_dependency_predictions_None.csv"
+    if mod == 'dependency1':
+        output_filename = "evaluation/import_dependency_predictions_dependency1.csv"
     elif mod == 'dependency2':
         output_filename = "evaluation/import_dependency_predictions_dependency2.csv"
     elif mod == 'dependency3':
@@ -103,8 +101,8 @@ def predict_seasonal_fluctuations(data_test, trade_type, mod = None):
     pd.DataFrame(y_test, columns=["Dollar value"]).to_csv(f"models/y_test_seasonal_{trade_type.lower()}.csv", index=False)
 
     # Load the trained model and column names
-    if mod is None:
-        model_filename = f"models/seasonal_{trade_type.lower()}_None.joblib"
+    if mod == 'seasonal1':
+        model_filename = f"models/seasonal_{trade_type.lower()}_seasonal1.joblib"
     elif mod == 'seasonal2':
         model_filename = f"models/seasonal_{trade_type.lower()}_seasonal2.joblib"
     elif mod == 'seasonal3':
@@ -131,8 +129,8 @@ def predict_seasonal_fluctuations(data_test, trade_type, mod = None):
     predictions = model.predict(X_test)
     seasonal_data["Predicted Dollar Value"] = predictions  # Adding predictions to the dataframe
 
-    if mod is None:
-        output_filename = f"evaluation/seasonal_{trade_type.lower()}_predictions_None.csv"
+    if mod == 'seasonal1':
+        output_filename = f"evaluation/seasonal_{trade_type.lower()}_predictions_seasonal1.csv"
     elif mod == 'seasonal2':
         output_filename = f"evaluation/seasonal_{trade_type.lower()}_predictions_seasonal2.csv"
     elif mod == 'seasonal3':
@@ -152,11 +150,3 @@ if __name__ == "__main__":
     imports_test = pd.read_csv("data_processed/import_test.csv")
     exports_test = pd.read_csv("data_processed/export_test.csv")
 
-    # Predict import-export dependency
-    dependency_predictions = predict_import_dependency(imports_test, exports_test)
-
-    # Predict seasonal fluctuations for imports and exports separately
-    seasonal_import_predictions = predict_seasonal_fluctuations(imports_test, "Imports")
-
-    #seasonal_export_predictions = predict_seasonal_fluctuations(exports_test, "Exports")
-    #seasonal_export_predictions.to_csv("evaluation/seasonal_exports_predictions.csv", index=False)

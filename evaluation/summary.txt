@@ -1,13 +1,13 @@
 Dependency Models Evaluation:
-             Accuracy  Precision    Recall  F1 Score
-None         0.476229        1.0  0.476229  0.645197
-dependency2  0.476229        1.0  0.476229  0.645197
-dependency3  0.476229        1.0  0.476229  0.645197
-dependency4  0.476229        1.0  0.476229  0.645197
+             Accuracy  F1 Score
+dependency1  0.962963  0.981132
+dependency2  0.870370  0.930693
+dependency3  0.833333  0.909091
+dependency4  0.485507  0.653659
 
 Seasonal Models Evaluation:
-                   RMSE           MAE   R-squared
-None       2.966051e+08  7.445797e+07   -0.016210
-seasonal2  2.966051e+08  7.445797e+07   -0.016210
-seasonal3  3.130830e+09  2.536691e+09 -112.225744
-seasonal4  2.966051e+08  7.445797e+07   -0.016210
+                   RMSE  R-squared
+seasonal1  2.954860e+08  -0.003578
+seasonal2  3.028833e+08  -0.054455
+seasonal3  3.028835e+08  -0.054457
+seasonal4  3.071955e+08  -0.084694
