@@ -7,14 +7,14 @@
 ### Metric 1
 **Name:** Accuracy
 
-**Choice Justification:** Accuracy is an appropriate metric for classification problems as it provides a straightforward measure of the model's overall correctness. It's particularly useful when the classes are balanced and all prediction errors are equally important.
+**Choice Justification:** Accuracy is an appropriate metric for this classification problem as it provides a straightforward measure of the model's overall correctness. It's useful when the classes are balanced and all prediction errors are equally important.
 
 **Interpretation:** The accuracy scores for the dependency models range from 0.485507 to 0.962963. Dependency1 shows the highest accuracy at 96.30%, indicating that it correctly classifies 96.30% of all instances. Dependency4 has the lowest accuracy at 48.55%, suggesting it performs only slightly better than random guessing for a binary classification task.
 
 ### Metric 2
 **Name:** F1 Score
 
-**Choice Justification:** The F1 score is chosen because it provides a balanced measure of precision and recall. It's particularly useful when there is an uneven class distribution or when false positives and false negatives have different costs.
+**Choice Justification:** The F1 score is chosen because it provides a balanced measure of precision and recall. It's  useful when there is an uneven class distribution and when false positives and false negatives have different costs.
 
 
 **Interpretation:** The F1 scores range from 0.653659 to 0.981132. Dependency1 has the highest F1 score of 0.9811, indicating a very good balance between precision and recall. Dependency4 has the lowest F1 score of 0.6537, suggesting a moderate performance in balancing precision and recall.
@@ -23,14 +23,14 @@
 ### Metric 1
 **Name:** RMSE
 
-**Choice Justification:** Root Mean Square Error (RMSE) is appropriate for regression problems as it measures the standard deviation of the residuals (prediction errors). It's useful when large errors are particularly undesirable, as it gives higher weight to large errors.
+**Choice Justification:** Root Mean Square Error (RMSE) is appropriate for this regression problem as it measures the standard deviation of the prediction errors. It's useful when large errors are particularly undesirable, as it gives higher weight to large errors.
 
 **Interpretation:**  The RMSE values for the seasonal models range from 2.954860e+08 to 3.071955e+08. These values are quite large, indicating substantial prediction errors. Seasonal1 has the lowest RMSE, suggesting it performs slightly better than the other models, but the difference is minimal.
 
 ### Metric 2
 **Name:** R-Square
 
-**Choice Justification:** R-Squared (R²) is chosen because it represents the proportion of variance in the dependent variable that is predictable from the independent variable(s). It provides an easy-to-understand measure of how well the model fits the data.
+**Choice Justification:** R-Squared is chosen because it represents the proportion of variance in the dependent variable that is predictable from the independent variables. It provides an easy-to-understand measure of how well the model fits the data.
 
 **Interpretation:** All R-squared values are negative, ranging from -0.003578 to -0.084694. Negative R-squared values indicate that the models perform worse than a horizontal line (mean of the data). This suggests that all seasonal models are performing poorly and are not explaining any of the variability in the target variable.
 
