@@ -12,6 +12,7 @@
 - The import-export ratio is close to 1 (1.177), indicating a near balance between imports and exports. This means there is a low import dependency. 
 - Alaska's economy is known for its natural resources, particularly oil and fishing, which could lead to significant exports.
 - The absolute values of imports and exports are relatively low, which might also suggest less overall trade dependency.
+- The model's use of categorical features like 'State', 'Fiscal year', and 'Fiscal quarter' alongside the numerical 'Ratio' may not be fully able to capture Alaska's unique economic characteristics, leading to the discrepancy between prediction and actual label
 While the model's prediction doesn't match the actual label, it can be argued that the low absolute trade values and near-balanced ratio justify a low dependency classification.
 
 ### Record 2
@@ -21,6 +22,7 @@ While the model's prediction doesn't match the actual label, it can be argued th
 - The import-export ratio is 0.572, indicating that exports are significantly more than imports.
 - Utah's exports are nearly double its imports, suggesting a strong export-reliant economy.
 - A low dependency level means the economy has exports more than it imports, due to it's less reliant on external goods.
+- The combination of 'State', 'Fiscal year', and 'Fiscal quarter' features allows the model to capture some state-specific and temporal patterns in trade dependency, contributing to the accurate prediction
 The model's prediction matches the actual label and is supported by the economic principle that higher exports relative to imports often indicate lower trade dependency.
 
 ## Explainable Records for Seasonality
@@ -30,6 +32,7 @@ The model's prediction matches the actual label and is supported by the economic
 **Prediction Explanation:** The model's prediction for Alabama's pet food trade in Spring 2024 is a lot more higher than the actual value. While this large discrepancy might seem unreasonable, there could be domain-specific explanations:
 - Seasonal trends: Spring might typically see a surge in pet food demand due to increased outdoor activities.
 - Regional factors: Alabama might be expected to become a major hub for pet food production or distribution, leading to higher predicted values.
+- The model's consideration of features like 'State', 'Commodity name', 'Fiscal year', 'Fiscal quarter', and 'Season' might lead to an overestimation if the combination of Alabama, Pet Food, and Spring is associated with high trade values in the training data
 However, the magnitude of the difference suggests that the model may be overfitting or failing to capture important nuances in the data.
 
 ### Record 2
@@ -39,6 +42,7 @@ However, the magnitude of the difference suggests that the model may be overfitt
 - Seasonal impact: Summer might typically see increased production and trade of industrial alcohols and fatty acids due to higher demand in related industries.
 - Economic factors: Ohio has a significant manufacturing sector, and the model might be accounting for expected growth in industries that use these chemicals.
 - Market trends: There could be an anticipated increase in demand for these products due to their use in sanitizers, cleaning products, or industrial processes.
+- The neural network's multiple layers allow it to learn intricate patterns in how the features 'State', 'Commodity name', 'Fiscal year', 'Fiscal quarter', and 'Season' interact, potentially capturing realistic seasonal and commodity-specific trends in Ohio's chemical industry trade
 While the prediction is still notably higher than the actual value, it's within a more reasonable range and could reflect potential growth or seasonal peaks in this specific commodity trade.
 
 ## Interesting Features
@@ -51,6 +55,13 @@ While the prediction is still notably higher than the actual value, it's within 
 **Feature:** Fiscal Quarter
 
 **Justification:** The "Fiscal Quarter" feature is significant for both predictions as it captures temporal variations in trade activities. For classification, different quarters might reflect changes in import-export ratios due to seasonal demand or supply shifts, impacting dependency levels. In terms of seasonality, the fiscal quarter directly relates to seasonal trends and fluctuations in commodity trade, as certain products may have higher demand or production in specific quarters due to climatic or economic cycles.
+
+### Feature C
+**Feature:** Ratio (for dependency classification) / Commodity name (for seasonality prediction)
+
+**Justification:** For the dependency classification model, the "Ratio" feature (imports divided by exports) is crucial as it directly quantifies the trade balance. The Random Forest Classifier uses this numerical feature alongside categorical ones to determine dependency levels. A ratio close to 1 indicates balanced trade, while values significantly above or below 1 suggest higher import or export dependency, respectively. 
+
+For the seasonality prediction model, the "Commodity name" feature is essential as it captures product-specific trade patterns. Different commodities have unique seasonal trends due to factors like production cycles, consumer demand, and industry-specific events. The MLPRegressor can learn these intricate patterns for each commodity, allowing it to make more accurate predictions of seasonal fluctuations in trade values
 
 
 ## Experiments for Dependency Predictions
