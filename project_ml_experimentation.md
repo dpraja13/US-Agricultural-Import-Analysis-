@@ -8,28 +8,27 @@
 ### Record 1
 **Raw Data:** State: AK, Fiscal year: 2023, Fiscal quarter: 2, Imports: 1905716.0, Exports: 1618574.0, Ratio: 1.1774043077424943, Dependency Level: Medium, Encoded Label: 2, Predicted Label: Low
 
-**Prediction Explanation:** The model predicts a Low dependency level for Alaska in Q2 2023, which differs from the actual Medium level. This prediction might be reasonable because:
-- The import-export ratio is close to 1 (1.177), indicating a near balance between imports and exports.
+**Prediction Explanation:** The model predicts a Low dependency level for Alaska in Fiscal Quater 2 of Fiscal year 2023, which differs from the actual Medium level. This prediction is reasonable because:
+- The import-export ratio is close to 1 (1.177), indicating a near balance between imports and exports. This means there is a low import dependency. 
 - Alaska's economy is known for its natural resources, particularly oil and fishing, which could lead to significant exports.
-- The absolute values of imports and exports are relatively low, which might suggest less overall trade dependency.
+- The absolute values of imports and exports are relatively low, which might also suggest less overall trade dependency.
 While the model's prediction doesn't match the actual label, it can be argued that the low absolute trade values and near-balanced ratio justify a low dependency classification.
 
 ### Record 2
 **Raw Data:** State: UT, Fiscal year: 2019, Fiscal quarter: 4, Imports: 52486670.0, Exports: 91767554.0, Ratio: 0.5719523700065058, Dependency Level: Low, Encoded Label: 1, Predicted Label: Low
 
-**Prediction Explanation:** The model correctly predicts a Low dependency level for Utah in Q4 2019. This prediction is reasonable because:
-- The import-export ratio is 0.572, indicating that exports significantly exceed imports.
-- Utah's exports are nearly double its imports, suggesting a strong export-oriented economy.
-- A low dependency level aligns with an economy that exports more than it imports, as it's less reliant on external goods.
+**Prediction Explanation:** The model correctly predicts a Low dependency level for Utah in Fiscal Quater 4 of the Fiscal year 2019. This prediction is reasonable because:
+- The import-export ratio is 0.572, indicating that exports are significantly more than imports.
+- Utah's exports are nearly double its imports, suggesting a strong export-reliant economy.
+- A low dependency level means the economy has exports more than it imports, due to it's less reliant on external goods.
 The model's prediction matches the actual label and is supported by the economic principle that higher exports relative to imports often indicate lower trade dependency.
 
 ## Explainable Records for Seasonality
 ### Record 1
 **Raw Data:** State: AL, Commodity name: Pet Food, Fiscal year: 2024, Fiscal quarter: 2, Season: Spring, Dollar value: 2180102, Predicted Dollar Value: 51142674.21129462
 
-**Prediction Explanation:** The model's prediction for Alabama's pet food trade in Spring 2024 is significantly higher than the actual value. While this large discrepancy might seem unreasonable, there could be domain-specific explanations:
-- Seasonal trends: Spring might typically see a surge in pet food demand due to increased outdoor activities and pet adoptions.
-- Economic projections: The model might be accounting for projected growth in the pet food industry, which has been expanding rapidly in recent years.
+**Prediction Explanation:** The model's prediction for Alabama's pet food trade in Spring 2024 is a lot more higher than the actual value. While this large discrepancy might seem unreasonable, there could be domain-specific explanations:
+- Seasonal trends: Spring might typically see a surge in pet food demand due to increased outdoor activities.
 - Regional factors: Alabama might be expected to become a major hub for pet food production or distribution, leading to higher predicted values.
 However, the magnitude of the difference suggests that the model may be overfitting or failing to capture important nuances in the data.
 
@@ -40,7 +39,7 @@ However, the magnitude of the difference suggests that the model may be overfitt
 - Seasonal impact: Summer might typically see increased production and trade of industrial alcohols and fatty acids due to higher demand in related industries.
 - Economic factors: Ohio has a significant manufacturing sector, and the model might be accounting for expected growth in industries that use these chemicals.
 - Market trends: There could be an anticipated increase in demand for these products due to their use in sanitizers, cleaning products, or industrial processes.
-While the prediction is still notably higher than the actual value, it's within a more plausible range and could reflect potential growth or seasonal peaks in this specific commodity trade.
+While the prediction is still notably higher than the actual value, it's within a more reasonable range and could reflect potential growth or seasonal peaks in this specific commodity trade.
 
 ## Interesting Features
 ### Feature A
