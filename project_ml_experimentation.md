@@ -71,12 +71,12 @@ While the prediction is still notably higher than the actual value, it's within 
 ### Varying A: Fiscal Quater
 **Prediction Trend Seen:** When varying the Fiscal quarter, there isn't a clear trend in the predicted dollar values. For example, Alabama's Pet Food predictions for Q1 2024 ($51,117,489) and Q2 2024 ($51,142,674) are very similar despite different quarters. This suggests that the model doesn't heavily weight the Fiscal quarter for dollar value predictions.
 
-### Varying B: Commodity Name
-**Prediction Trend Seen:** Varying the Commodity name shows some differences in predicted values, but not consistently large ones. For instance, Alabama's Q2 2024 predictions for Pet Food ($51,142,674) and Industrial Alcohols And Fatty Acids ($51,166,292) are similar. This indicates that the Commodity name alone doesn't dramatically impact predictions.
+### Varying B: State
+**Prediction Trend Seen:** Varying the state shows some differences in predicted values, but the changes are not consistently large. For example, Alabama's predictions for Pet Food in Q2 2024 ($51,142,674) are quite similar to Ohio's predictions for the same quarter and commodity ($51,149,567). This suggests that the state contributes to the prediction but does not dramatically influence the dollar value.
 
 ### Varying A and B together
-**Prediction Trend Seen:** When varying both Fiscal quarter and Commodity name together, we see some variations in predictions, but they're not drastically different. For example, comparing Alabama's Pet Food in Q2 2024 ($51,142,674) with Ohio's Industrial Alcohols And Fatty Acids in Q3 2023 ($51,166,292), we see a small difference. This suggests that the combined effect of these features does influence predictions, but not dramatically.
+**Prediction Trend Seen:** When varying both Fiscal quarter and State together, we observe slight variations in predictions. For example, comparing Alabama's Pet Food in Q2 2024 ($51,142,674) with Ohio's Industrial Alcohols And Fatty Acids in Q3 2023 ($51,156,962), the predicted values differ by a small margin. This implies that the combined effect of these features does have an influence, but the magnitude of impact remains moderate.
 
 ### Varying A and B inversely
-**Prediction Trend Seen:** When varying Fiscal quarter and Commodity name inversely, the trend is similar to varying them together. The predictions show some variations, but they're relatively small. For instance, comparing Alabama's Pet Food in Q2 2024 ($51,142,674) with Alabama's Industrial Alcohols And Fatty Acids in Q3 2023 ($51,156,962), we see only minor differences. This further confirms that while these features do impact predictions, their influence is not very strong in isolation.
+**Prediction Trend Seen:** When varying Fiscal quarter and State inversely, the trend is similar to varying them together. For instance, comparing Alabama's Pet Food in Q2 2024 ($51,142,674) with Ohio's Pet Food in Q1 2023 ($51,139,874) shows only minor differences in predictions. This indicates that while the features contribute to variations, their individual influence on the predictions is limited.
 
